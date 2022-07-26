@@ -11,7 +11,7 @@ const app = express()
 
 const schema = buildSchema(`
   type Query {
-    language: [String]
+    language(key: String): [String]
   }
 `)
 
@@ -30,7 +30,7 @@ const key = 'C'
 
 
 const rootValue = {
-  language: () => startsWith(states, key)
+  language: (args) => startsWith(states, args.key)
 }
 
 // Get Posts
@@ -53,9 +53,7 @@ app.use('/graphql', graphqlHTTP({
   rootValue, schema, graphiql: true
 }))
 
-app.use('/graphql', async (req, res) => {
 
-})
 
 app.listen(4000, () => console.log('Listening on 4000'))
 
