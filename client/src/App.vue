@@ -1,12 +1,21 @@
 <template>
-  <label for="site-search">Search America: </label>
-  <input v-model="message" placeholder="edit me" @input="changeHandler" />
-  <button v-on:click="submit">Search</button>
-  <p>{{ this.markers }}</p>
-  <p>{{ this.center }}</p>
+  <div class="autocomplete">
+    <label for="site-search">Search America: </label>
+    <input v-model="message" placeholder="edit me" @input="changeHandler" />
+    <button v-on:click="submit">Search</button>
+  </div>
+  <!-- <p>{{ this.markers }}</p>
+  <p>{{ this.center }}</p> -->
 
-  <ul>
-    <li v-for="item in items" :key="item">{{ item }}</li>
+  <ul class="autocomplete-results">
+    <li
+      class="autocomplete-result"
+      v-for="(item, i) in items"
+      :key="i"
+      @click="setResult(item)"
+    >
+      {{ item }}
+    </li>
   </ul>
 
   <GMapMap
@@ -87,6 +96,10 @@ export default {
           this.center = { lat: latitude, lng: longitude };
         });
     },
+    setResult: function (item) {
+      this.message = item;
+      this.submit();
+    },
     submit: function () {
       // get the geolocation of this.message
       this.getCoordinates(this.message);
@@ -113,5 +126,31 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.autocomplete {
+  position: relative;
+}
+
+.autocomplete-results {
+  padding: 0;
+  margin: 0;
+  border: 1px solid #eeeeee;
+  height: 120px;
+  min-height: 1em;
+  max-height: 6em;
+  overflow: auto;
+}
+
+.autocomplete-result {
+  list-style: none;
+  text-align: left;
+  padding: 4px 2px;
+  cursor: pointer;
+}
+
+.autocomplete-result:hover {
+  background-color: #4aae9b;
+  color: white;
 }
 </style>
