@@ -1,8 +1,11 @@
-<template>
 
+<template>
+  
   <label for="site-search">Search America: </label>
   <input v-model="message" placeholder="edit me" v-on:change="changeHandler" />
   <button v-on:click="submit">Search</button>
+  <p>{{this.markers}}</p>
+  <p>{{this.center}}</p>
 
 
 
@@ -32,7 +35,8 @@
 
 <script>
 import axios from "axios";
-
+var latitude
+var longitude
 
 export default {
   name: 'my-component',
@@ -69,12 +73,40 @@ export default {
     }
     
     },
+    async getCoordinates(){
+      var address = this.message
+      var API_KEY = 'AIzaSyB9LKz9DQj_pI1Du_ - URrPE20YfZKSM5Ug'
+      
+  await fetch("https://maps.googleapis.com/maps/api/geocode/json?address="+address+'&key='+API_KEY)
+    .then(response => response.json())
+    .then(data => {
+      var latitude = data.results[0].geometry.location.lat;
+      var longitude = data.results[0].geometry.location.lng;
+      console.log({latitude, longitude})
+    })
+},
+    
     submit : function(){
       // get the geolocation of this.message 
+      this.getCoordinates(this.message)
+
+      console.log("can I get them", latitude,longitude)
+      
+
+      this.markers = [
+        {
+          position: {
+            lat: latitude, lng: longitude
+          },
+        }
+
+      ]
+      this.center = {lat: latitude, lng: longitude}
     }
   }
 }
 </script>
+
 
 <style>
 #app {
