@@ -17,35 +17,18 @@ const schema = buildSchema(`
 
 
 function startsWith(array, key) {
-  const matcher = new RegExp(`^${key}`, 'g');
+  const matcher = new RegExp(`^${key}`, 'i');
   return array.filter(word => word.match(matcher));
 }
 
 
 // try to get the message from App.Vue
-const key = 'C'
-
-
-
-
 
 const rootValue = {
+  // language: (args) => [args.key]
   language: (args) => startsWith(states, args.key)
+
 }
-
-// Get Posts
-// router.get('/', async (req, res) => {
-//   res.send('filtered states');
-
-// });
-
-// router.get('/:bookId', async (req, res) => {
-
-//   var key = req.params
-//   // res.send(key)
-//   const result = startsWith(states, key)
-//   res.send(result)
-// })
 
 
 app.use(cors())

@@ -1,7 +1,7 @@
 <template>
   <label for="site-search">Search America: </label>
   <p id= "current_search">{{ message }}</p>
-  <input v-model="message" placeholder="edit me" v-on:change="changeHandler($event)" />
+  <input v-model="message" placeholder="edit me" v-on:change="changeHandler" />
   <button>Search</button>
 
 
@@ -23,25 +23,19 @@ export default {
       items: [], 
     }
   },
-  async created() {
-    try {
-      const res = await axios.post(
-          'http://localhost:4000/graphql');
-      this.items = res.data.data.language;
-    } catch (error) {
-      console.log(error);
-    }
-    
-  },
   methods: {
-    async changeHandler(event){
+    async changeHandler(){
       
+      var input_value = event.target.value
+      console.log(input_value)
+
       try {
       const res = await axios.post(
           'http://localhost:4000/graphql', {
-          query: '{ language(key: event.target.value) }',
+          query: `{ language(key: "${input_value}") }`,
           
         });
+      console.log(res);
       this.items = res.data.data.language;
     } catch (error) {
       console.log(error);
