@@ -1,13 +1,32 @@
 <template>
+
   <label for="site-search">Search America: </label>
-  <p id= "current_search">{{ message }}</p>
   <input v-model="message" placeholder="edit me" v-on:change="changeHandler" />
-  <button>Search</button>
+  <button v-on:click="submit">Search</button>
+
 
 
   <ul>
     <li v-for = "item in items" :key="item"> {{ item }} </li>
   </ul>
+
+  <GMapMap
+      :center="center"
+      :zoom="7"
+      map-type-id="terrain"
+      style="width: 500px; height: 300px"
+  >
+    <GMapCluster>
+      <GMapMarker
+          :key="index"
+          v-for="(m, index) in markers"
+          :position="m.position"
+          :clickable="true"
+          :draggable="true"
+          @click="center=m.position"
+      />
+    </GMapCluster>
+  </GMapMap>
 
 </template>
 
@@ -21,13 +40,21 @@ export default {
     return {
       message: '',
       items: [], 
+      center: {lat: 51.093048, lng: 6.842120},
+      markers: [
+        {
+          position: {
+            lat: 51.093048, lng: 6.842120
+          },
+        }
+        , // Along list of clusters
+      ]
     }
   },
   methods: {
     async changeHandler(){
       
       var input_value = event.target.value
-      console.log(input_value)
 
       try {
       const res = await axios.post(
@@ -41,6 +68,9 @@ export default {
       console.log(error);
     }
     
+    },
+    submit : function(){
+      // get the geolocation of this.message 
     }
   }
 }

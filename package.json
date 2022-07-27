@@ -10,6 +10,7 @@
   "author": "Pu Yang",
   "license": "MIT",
   "dependencies": {
+    "@fawmi/vue-google-maps": "^0.9.72",
     "axios": "^0.27.2",
     "body-parser": "^1.20.0",
     "cors": "^2.8.5",
